@@ -1,4 +1,4 @@
-package kr.ac.jejunu.diarymvc.folder;
+package kr.ac.jejunu.diarymvc.diary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FolderResponseDto {
+public class ChangeEmotionDto {
 
-    private long id;
-    private String name;
-    private long user_id;
+    private int emotion;
 
 }

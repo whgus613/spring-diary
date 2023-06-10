@@ -1,18 +1,21 @@
 package kr.ac.jejunu.diarymvc.diary;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import kr.ac.jejunu.diarymvc.folder.Folder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import kr.ac.jejunu.diarymvc.user.User;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "diaries")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 public class Diary {
     @Id
@@ -23,10 +26,12 @@ public class Diary {
     private String content;
     private int emotion;
     @CreatedDate
-    private String date;
+    @Column(name = "date", nullable = false, updatable = true)
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
+    @JsonBackReference
     private Folder folder;
 
 }

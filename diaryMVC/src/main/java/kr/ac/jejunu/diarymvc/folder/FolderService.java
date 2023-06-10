@@ -28,7 +28,7 @@ public class FolderService {
 
         Folder createdFolder = folderRepository.save(folder);
 
-        return new FolderResponseDto(createdFolder.getName(), createdFolder.getUser().getId());
+        return new FolderResponseDto(createdFolder.getId(), createdFolder.getName(), createdFolder.getUser().getId());
     }
 
     public FolderResponseDto updateFolder(Long folderId, FolderDto updatedFolderDto) {
@@ -39,7 +39,7 @@ public class FolderService {
 
         Folder updatedFolder = folderRepository.save(existingFolder);
 
-        return new FolderResponseDto(updatedFolder.getName(), updatedFolder.getUser().getId());
+        return new FolderResponseDto(updatedFolder.getId(), updatedFolder.getName(), updatedFolder.getUser().getId());
     }
 
     public void deleteFolder(Long folderId) {
@@ -49,7 +49,7 @@ public class FolderService {
     public List<FolderResponseDto> getFoldersByUserId(Long userId) {
         List<Folder> folders = folderRepository.findByUserId(userId);
         return folders.stream()
-                .map(folder -> new FolderResponseDto(folder.getName(), folder.getUser().getId()))
+                .map(folder -> new FolderResponseDto(folder.getId(), folder.getName(), folder.getUser().getId()))
                 .collect(Collectors.toList());
     }
 }

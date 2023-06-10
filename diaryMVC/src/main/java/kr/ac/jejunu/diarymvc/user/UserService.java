@@ -25,7 +25,7 @@ public class UserService {
 
         User createdUser = userRepository.save(user);
 
-        return new UserResponseDto(createdUser.getUsername(), createdUser.getEmail(), createdUser.getPassword());
+        return new UserResponseDto(createdUser.getId(), createdUser.getUsername(), createdUser.getEmail(), createdUser.getPassword());
     }
 
 
@@ -33,7 +33,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
 
-        return new UserResponseDto(user.getUsername(), user.getEmail(), user.getPassword());
+        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
     }
 
     public void deleteUser(Long userId) {

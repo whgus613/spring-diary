@@ -1,9 +1,13 @@
 package kr.ac.jejunu.diarymvc.diary;
 
-import kr.ac.jejunu.diarymvc.folder.Folder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -15,36 +19,72 @@ public class DiaryController {
         this.diaryService = diaryService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Diary createDiary(@RequestBody Diary diary, @RequestParam Long folderId) {
-        // Set the folder ID in the diary object
-        Folder folder = new Folder();
-        folder.setId(folderId);
-        diary.setFolder(folder);
-
-        return diaryService.createDiary(diary);
-    }
-
-
-    @PutMapping("/{diaryId}")
-    public Diary updateDiary(@PathVariable Long diaryId, @RequestBody Diary updatedDiary) {
-        return diaryService.updateDiary(diaryId, updatedDiary);
+    @PostMapping("/{folderId}")
+    public ResponseEntity<DiaryResponseDto> createDiary(
+            @PathVariable Long folderId,
+            @RequestBody DiaryDto diaryDto) {
+        DiaryResponseDto createdDiary = diaryService.createDiary(folderId, diaryDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDiary);
     }
 
     @DeleteMapping("/{diaryId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDiary(@PathVariable Long diaryId) {
+    public ResponseEntity<Void> deleteDiary(@PathVariable Long diaryId) {
         diaryService.deleteDiary(diaryId);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search/by-date")
-    public List<Diary> searchDiariesByDate(@RequestParam String date) {
-        return diaryService.searchDiariesByDate(date);
+    @GetMapping("/{diaryId}")
+    public ResponseEntity<DiaryResponseDto> getDiary(@PathVariable Long diaryId) {
+        DiaryResponseDto diary = diaryService.getDiary(diaryId);
+        return ResponseEntity.ok(diary);
     }
 
-    @GetMapping("/search/by-keyword")
-    public List<Diary> searchDiariesByKeyword(@RequestParam String keyword) {
-        return diaryService.searchDiariesByKeyword(keyword);
+    @GetMapping("/folder/{folderId}")
+    public ResponseEntity<List<DiaryResponseDto>> getDiariesByFolderId(@PathVariable Long folderId) {
+        List<DiaryResponseDto> diaries = diaryService.getDiariesByFolderId(folderId);
+        return ResponseEntity.ok(diaries);
     }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<Diary>> getDiariesByDate(@PathVariable("date") String dateString) {
+        LocalDate date = LocalDate.parse(dateString);
+        List<Diary> diaries = diaryService.getDiariesByDate(date);
+        return ResponseEntity.ok(diaries);
+    }
+
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Diary>> searchDiariesByKeyword(@RequestParam String keyword) {
+        List<Diary> diaries = diaryService.searchDiariesByKeyword(keyword);
+        return ResponseEntity.ok(diaries);
+    }
+
+    @PutMapping("/{diaryId}/content")
+    public DiaryResponseDto changeContent(@PathVariable Long diaryId, @RequestBody ChangeContentDto changeContentDto) {
+        String content = changeContentDto.getContent();
+        return diaryService.changeContent(diaryId, content);
+    }
+
+    @PutMapping("/{diaryId}/emotion")
+    public DiaryResponseDto changeEmotion(@PathVariable Long diaryId, @RequestBody ChangeEmotionDto changeEmotionDto) {
+        int emotion = changeEmotionDto.getEmotion();
+        return diaryService.changeEmotion(diaryId, emotion);
+    }
+
+    @PutMapping("/{diaryId}/title")
+    public DiaryResponseDto changeTitle(@PathVariable Long diaryId, @RequestBody ChangeTitleDto changeTitleDto) {
+        String title = changeTitleDto.getTitle();
+        return diaryService.changeTitle(diaryId, title);
+    }
+
+    @PutMapping("/{diaryId}/change-date")
+    public ResponseEntity<DiaryResponseDto> changeDiaryDate(
+            @PathVariable Long diaryId,
+            @RequestBody ChangeDateDto changeDateDto
+    ) {
+        DiaryResponseDto updatedDiary = diaryService.changeDate(diaryId, changeDateDto);
+        return ResponseEntity.ok(updatedDiary);
+    }
+
 }
