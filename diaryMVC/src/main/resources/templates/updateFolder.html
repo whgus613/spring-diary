@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>폴더 업데이트</title>
+</head>
+<body>
+<h2>폴더 업데이트</h2>
+<form th:action="@{'/folders/update/' + ${folder.id}}" method="post">
+    <input type="text" th:field="*{name}" placeholder="새로운 폴더 이름" required>
+    <button type="submit">업데이트</button>
+</form>
+</body>
+</html>

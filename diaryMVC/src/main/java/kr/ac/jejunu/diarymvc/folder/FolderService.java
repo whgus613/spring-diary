@@ -52,4 +52,10 @@ public class FolderService {
                 .map(folder -> new FolderResponseDto(folder.getId(), folder.getName(), folder.getUser().getId()))
                 .collect(Collectors.toList());
     }
+
+    public Folder getFolderById(Long folderId) {
+        return folderRepository.findById(folderId)
+                .orElse(null);
+    }
+
 }

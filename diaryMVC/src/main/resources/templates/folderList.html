@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>폴더 목록</title>
+</head>
+<body>
+<h2>폴더 목록</h2>
+<table>
+    <tr>
+        <th>이름</th>
+        <th>삭제</th>
+    </tr>
+    <tr th:each="folder : ${folders}">
+        <td th:text="${folder.name}"></td>
+        <td>
+            <a th:href="@{/folders/delete/{folderId}(folderId=${folder.id})}" onclick="return confirm('폴더를 삭제하시겠습니까?')">X</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{/folders/create/{userId}(userId=${userId})}">새로운 폴더 생성</a>
+</body>
+</html>

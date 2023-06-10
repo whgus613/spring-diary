@@ -35,19 +35,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("userDto") UserDto userDto, RedirectAttributes redirectAttributes) {
+    public String loginUser(@ModelAttribute("userDto") UserDto userDto, RedirectAttributes redirectAttributes, Model model) {
         String email = userDto.getEmail();
         String password = userDto.getPassword();
 
         boolean isAuthenticated = userService.authenticateUser(email, password);
         if (isAuthenticated) {
-            redirectAttributes.addFlashAttribute("successMessage", "로그인에 성공하셨습니다!");
-            return "redirect:/home";
+            Long userId = userService.getUserIdByEmail(email);
+
+            return "redirect:/folders/list/" + userId;
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "로그인에 실패하셨습니다.");
             return "redirect:/login?error";
         }
     }
+
 
 
 }
