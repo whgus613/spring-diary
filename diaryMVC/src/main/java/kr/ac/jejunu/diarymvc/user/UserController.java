@@ -1,36 +1,53 @@
 package kr.ac.jejunu.diarymvc.user;
 
-import kr.ac.jejunu.diarymvc.user.UserDto;
-import kr.ac.jejunu.diarymvc.user.UserResponseDto;
-import kr.ac.jejunu.diarymvc.user.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserDto userDto) {
-        UserResponseDto createdUser = userService.createUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "register";
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
-        UserResponseDto user = userService.getUser(userId);
-        return ResponseEntity.ok(user);
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute("userDto") UserDto userDto) {
+        userService.createUser(userDto);
+        return "redirect:/users/login";
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "login";
     }
+
+    @PostMapping("/login")
+    public String loginUser(@ModelAttribute("userDto") UserDto userDto, RedirectAttributes redirectAttributes) {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
+
+        boolean isAuthenticated = userService.authenticateUser(email, password);
+        if (isAuthenticated) {
+            redirectAttributes.addFlashAttribute("successMessage", "로그인에 성공하셨습니다!");
+            return "redirect:/home";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인에 실패하셨습니다.");
+            return "redirect:/login?error";
+        }
+    }
+
+
 }
