@@ -28,8 +28,8 @@ public class User {
     private String email;
     private String password;
 
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Folder> folders;
 
 }

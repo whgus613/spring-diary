@@ -22,12 +22,11 @@ public class Folder {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"folders"})
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnoreProperties({"folder"})
-    @OneToMany(mappedBy = "folder")
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL)
     private List<Diary> diaries;
 
 }

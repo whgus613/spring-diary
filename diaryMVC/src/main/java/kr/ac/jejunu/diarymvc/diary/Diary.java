@@ -25,8 +25,8 @@ public class Diary {
     @CreatedDate
     private String date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"diaries"})
+    @ManyToOne
+    @JoinColumn(name = "folder_id")
     private Folder folder;
 
 }

@@ -1,8 +1,7 @@
 package kr.ac.jejunu.diarymvc.folder;
 
-import kr.ac.jejunu.diarymvc.diary.Diary;
-import kr.ac.jejunu.diarymvc.user.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,32 +15,27 @@ public class FolderController {
         this.folderService = folderService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Folder createFolder(@RequestBody Folder folder, @RequestParam Long userId) {
-        User user = new User();
-        user.setId(userId);
-        folder.setUser(user);
-
-        return folderService.createFolder(folder);
+    @PostMapping("/{userId}")
+    public ResponseEntity<FolderResponseDto> createFolder(@PathVariable Long userId, @RequestBody FolderDto folderDto) {
+        FolderResponseDto createdFolder = folderService.createFolder(userId, folderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFolder);
     }
 
-
     @PutMapping("/{folderId}")
-    public Folder updateFolder(@PathVariable Long folderId, @RequestBody Folder updatedFolder) {
-        return folderService.updateFolder(folderId, updatedFolder);
+    public ResponseEntity<FolderResponseDto> updateFolder(@PathVariable Long folderId, @RequestBody FolderDto folderDto) {
+        FolderResponseDto updatedFolder = folderService.updateFolder(folderId, folderDto);
+        return ResponseEntity.ok(updatedFolder);
     }
 
     @DeleteMapping("/{folderId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFolder(@PathVariable Long folderId) {
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId) {
         folderService.deleteFolder(folderId);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{folderId}/diaries")
-    public List<Diary> getFolderDiaries(@PathVariable Long folderId) {
-        return folderService.getFolderDiaries(folderId);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<FolderResponseDto>> getFoldersByUserId(@PathVariable Long userId) {
+        List<FolderResponseDto> folders = folderService.getFoldersByUserId(userId);
+        return ResponseEntity.ok(folders);
     }
-
 }
-
