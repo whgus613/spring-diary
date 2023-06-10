@@ -1,5 +1,6 @@
 package kr.ac.jejunu.diarymvc.folder;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import kr.ac.jejunu.diarymvc.diary.Diary;
 import kr.ac.jejunu.diarymvc.user.User;
@@ -21,11 +22,12 @@ public class Folder {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"folders"})
     private User user;
 
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"folder"})
+    @OneToMany(mappedBy = "folder")
     private List<Diary> diaries;
 
 }

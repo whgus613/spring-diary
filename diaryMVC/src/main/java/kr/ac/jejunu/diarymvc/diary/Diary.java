@@ -1,11 +1,13 @@
 package kr.ac.jejunu.diarymvc.diary;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import kr.ac.jejunu.diarymvc.folder.Folder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import kr.ac.jejunu.diarymvc.user.User;
+import org.springframework.data.annotation.CreatedDate;
 
 @Getter
 @Setter
@@ -20,14 +22,11 @@ public class Diary {
     private String title;
     private String content;
     private int emotion;
+    @CreatedDate
     private String date;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "folder_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"diaries"})
     private Folder folder;
 
 }
