@@ -109,4 +109,11 @@ public class DiaryController {
         return "diaryByWord";
     }
 
+    @GetMapping("/folders/{folderId}/emotion-avg")
+    public String showAverageEmotionScore(@PathVariable Long folderId, Model model) {
+        double averageEmotionScore = diaryService.calculateAverageEmotionScore(folderId);
+        model.addAttribute("averageEmotionScore", averageEmotionScore);
+        return "emotionAvg";
+    }
+
 }

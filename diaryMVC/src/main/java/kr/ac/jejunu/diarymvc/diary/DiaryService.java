@@ -115,4 +115,12 @@ public class DiaryService {
                 .orElseThrow(() -> new RuntimeException("Diary not found with id: " + diaryId));
     }
 
+    public double calculateAverageEmotionScore(Long folderId) {
+        List<Diary> diaries = diaryRepository.findByFolderId(folderId);
+        int totalEmotionScore = diaries.stream()
+                .mapToInt(Diary::getEmotion)
+                .sum();
+        return (double) totalEmotionScore / diaries.size();
+    }
+
 }
