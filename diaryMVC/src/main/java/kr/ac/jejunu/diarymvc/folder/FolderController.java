@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/folders")
@@ -65,6 +66,25 @@ public class FolderController {
         return "redirect:" + request.getHeader("Referer");
     }
 
+    @GetMapping("/update/{folderId}")
+    public String showUpdateFolderPage(@PathVariable Long folderId, Model model) {
+        Folder folder = folderService.getFolderById(folderId);
+        if (folder == null) {
+            throw new NoSuchElementException("Folder not found with id: " + folderId);
+        }
+
+        model.addAttribute("folder", folder);
+        return "updateFolder";
+    }
+
+    @PostMapping("/update/{folderId}")
+    public String updateFolder(@PathVariable Long folderId, @ModelAttribute("folder") FolderDto updatedFolderDto, HttpServletRequest request) {
+        FolderResponseDto folderResponseDto = folderService.updateFolder(folderId, updatedFolderDto);
+
+        Long userId = folderResponseDto.getUser_id();
+
+        return "redirect:/folders/list/" + userId;
+    }
 
 
 }

@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FolderDto {
 
-    String name;
+    private String name;
 
 }
