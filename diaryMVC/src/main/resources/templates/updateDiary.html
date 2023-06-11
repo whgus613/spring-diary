@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>다이어리 수정</title>
+</head>
+<body>
+<h1>다이어리 수정</h1>
+<form th:action="@{/diaries/update/{diaryId}(diaryId=${diary.id})}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+    <div>
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" th:value="${diary.title}" required/>
+    </div>
+    <div>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" rows="4" cols="50" required th:text="${diary.content}"></textarea>
+    </div>
+    <div>
+        <label for="date">날짜:</label>
+        <input type="date" id="date" name="date" th:value="${diary.date}" required/>
+    </div>
+    <div>
+        <label for="emotion">감정 점수:</label>
+        <input type="number" id="emotion" name="emotion" min="0" max="10" th:value="${diary.emotion}" required/>
+    </div>
+    <input type="submit" value="수정"/>
+</form>
+</body>
+</html>

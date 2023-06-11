@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>다이어리 목록</title>
+</head>
+<body>
+<h2>다이어리 목록</h2>
+<form th:action="@{/diaries/search-by-date}" method="get">
+    <div>
+        <label for="searchByDate">날짜별 검색:</label>
+        <input type="date" id="searchByDate" name="date" required/>
+        <button type="submit">검색</button>
+    </div>
+</form>
+<form th:action="@{/diaries/search-by-word}" method="get">
+    <div>
+        <label for="searchByKeyword">키워드별 검색:</label>
+        <input type="text" id="searchByKeyword" name="keyword" required/>
+        <button type="submit">검색</button>
+    </div>
+</form>
+<table>
+    <tr>
+        <th>날짜</th>
+        <th>제목</th>
+        <th>수정</th>
+        <th>삭제</th>
+    </tr>
+    <tr th:each="diary : ${diaries}">
+        <td th:text="${diary.date}"></td>
+        <td>
+            <a th:href="@{/diaries/{diaryId}(diaryId=${diary.id})}" th:text="${diary.title}"></a>
+        </td>
+        <td>
+            <a th:href="@{/diaries/update/{diaryId}(diaryId=${diary.id})}">수정</a>
+        </td>
+        <td>
+            <a th:href="@{/diaries/delete/{diaryId}(diaryId=${diary.id})}" onclick="return confirm('일기를 삭제하시겠습니까?')">X</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{/diaries/create/{folderId}(folderId=${folderId})}">새 다이어리 만들기</a>
+</body>
+</html>

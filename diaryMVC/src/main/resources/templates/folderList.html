@@ -13,7 +13,9 @@
         <th>삭제</th>
     </tr>
     <tr th:each="folder : ${folders}">
-        <td th:text="${folder.name}"></td>
+        <td>
+            <a th:href="@{/diaries/folder/{folderId}(folderId=${folder.id})}" th:text="${folder.name}"></a>
+        </td>
         <td>
             <a th:href="@{/folders/update/{folderId}(folderId=${folder.id})}">수정</a>
         </td>

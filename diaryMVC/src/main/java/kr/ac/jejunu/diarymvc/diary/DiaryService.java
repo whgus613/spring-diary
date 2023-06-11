@@ -87,11 +87,16 @@ public class DiaryService {
         return diaryRepository.searchByKeyword(keyword);
     }
 
-    public DiaryResponseDto changeContent(Long diaryId, String content) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NoSuchElementException("Diary not found with id: " + diaryId));
 
-        diary.setContent(content);
+    public DiaryResponseDto updateDiary(Long diaryId, ChangeDiaryDto changeDiaryDto) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new RuntimeException("Diary not found with id: " + diaryId));
+
+        diary.setContent(changeDiaryDto.getContent());
+        diary.setDate(changeDiaryDto.getDate());
+        diary.setEmotion(changeDiaryDto.getEmotion());
+        diary.setTitle(changeDiaryDto.getTitle());
+
         Diary updatedDiary = diaryRepository.save(diary);
 
         return new DiaryResponseDto(
@@ -102,58 +107,12 @@ public class DiaryService {
                 updatedDiary.getDate(),
                 updatedDiary.getFolder().getId()
         );
+
     }
 
-    public DiaryResponseDto changeEmotion(Long diaryId, int emotion) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NoSuchElementException("Diary not found with id: " + diaryId));
-
-        diary.setEmotion(emotion);
-        Diary updatedDiary = diaryRepository.save(diary);
-
-        return new DiaryResponseDto(
-                updatedDiary.getId(),
-                updatedDiary.getTitle(),
-                updatedDiary.getContent(),
-                updatedDiary.getEmotion(),
-                updatedDiary.getDate(),
-                updatedDiary.getFolder().getId()
-        );
+    public Diary findDiaryById(Long diaryId) {
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new RuntimeException("Diary not found with id: " + diaryId));
     }
-
-    public DiaryResponseDto changeTitle(Long diaryId, String title) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NoSuchElementException("Diary not found with id: " + diaryId));
-
-        diary.setTitle(title);
-        Diary updatedDiary = diaryRepository.save(diary);
-
-        return new DiaryResponseDto(
-                updatedDiary.getId(),
-                updatedDiary.getTitle(),
-                updatedDiary.getContent(),
-                updatedDiary.getEmotion(),
-                updatedDiary.getDate(),
-                updatedDiary.getFolder().getId()
-        );
-    }
-
-    public DiaryResponseDto changeDate(Long diaryId, ChangeDateDto changeDateDto) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NoSuchElementException("Diary not found with id: " + diaryId));
-
-        diary.setDate(changeDateDto.getDate());
-        Diary updatedDiary = diaryRepository.save(diary);
-
-        return new DiaryResponseDto(
-                updatedDiary.getId(),
-                updatedDiary.getTitle(),
-                updatedDiary.getContent(),
-                updatedDiary.getEmotion(),
-                updatedDiary.getDate(),
-                updatedDiary.getFolder().getId()
-        );
-    }
-
 
 }

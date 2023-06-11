@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>다이어리 검색 결과 (날짜별)</title>
+</head>
+<body>
+<h1>다이어리 검색 결과 (날짜별)</h1>
+<table>
+    <tr>
+        <th>날짜</th>
+        <th>제목</th>
+        <th>내용</th>
+    </tr>
+    <tr th:each="diary : ${diaries}">
+        <td th:text="${diary.date}"></td>
+        <td th:text="${diary.title}"></td>
+        <td th:text="${diary.content}"></td>
+    </tr>
+</table>
+</body>
+</html>

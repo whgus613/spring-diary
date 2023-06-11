@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>다이어리 상세 정보</title>
+</head>
+<body>
+<h1>다이어리 상세 정보</h1>
+
+<table>
+    <tr>
+        <th>제목</th>
+        <th>내용</th>
+        <th>감정</th>
+        <th>날짜</th>
+    </tr>
+    <tr>
+        <td th:text="${diary.title}"></td>
+        <td th:text="${diary.content}"></td>
+        <td th:text="${diary.emotion}"></td>
+        <td th:text="${diary.date}"></td>
+    </tr>
+</table>
+
+<a th:href="@{/diaries/folder/{folderId}(folderId=${diary.folderId})}">폴더로 돌아가기</a>
+</body>
+</html>

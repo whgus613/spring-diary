@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>다이어리 작성</title>
+</head>
+<body>
+<h1>다이어리 작성</h1>
+<form th:action="@{/diaries/create/{folderId}(folderId=${folderId})}" method="post" th:object="${diaryDto}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+    <input type="hidden" name="folderId" th:value="${folderId}"/>
+    <div>
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" required/>
+    </div>
+    <div>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+    </div>
+    <div>
+        <label for="emotion">감정 점수:</label>
+        <input type="number" id="emotion" name="emotion" min="0" max="10" required/>
+    </div>
+    <input type="submit" value="작성"/>
+    </div>
+</form>
+</body>
+</html>
