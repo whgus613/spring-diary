@@ -2,6 +2,8 @@ package kr.ac.jejunu.diarymvc.diary;
 
 import jakarta.validation.Valid;
 import kr.ac.jejunu.diarymvc.folder.FolderDto;
+import kr.ac.jejunu.diarymvc.user.User;
+import kr.ac.jejunu.diarymvc.user.UserRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +18,12 @@ import java.util.NoSuchElementException;
 @RequestMapping("/diaries")
 public class DiaryController {
     private final DiaryService diaryService;
+    private final UserRepository userRepository;
 
-    public DiaryController(DiaryService diaryService) {
+    public DiaryController(DiaryService diaryService,
+                           UserRepository userRepository) {
         this.diaryService = diaryService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{diaryId}")
@@ -92,18 +97,19 @@ public class DiaryController {
         return "redirect:/diaries/user/" + userId + "/folder/" + folderId;
     }
 
-    @GetMapping("/search-by-date")
-    public String getDiariesByDate(@RequestParam("date")
-                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                   LocalDate date, Model model) {
-        List<Diary> diaries = diaryService.getDiariesByDate(date);
+    @GetMapping("/user/{userId}/search-by-date")
+    public String getDiariesByDate(@PathVariable Long userId, @RequestParam String date, Model model) {
+        LocalDate parsedDate = LocalDate.parse(date);
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        List<Diary> diaries = diaryService.findByUserAndDate(user, parsedDate);
         model.addAttribute("diaries", diaries);
         return "diaryByDate";
     }
 
-    @GetMapping("/search-by-word")
-    public String searchDiariesByKeyword(@RequestParam("keyword") String keyword, Model model) {
-        List<Diary> diaries = diaryService.searchDiariesByKeyword(keyword);
+    @GetMapping("/user/{userId}/search-by-word")
+    public String searchDiariesByKeyword(@PathVariable Long userId, @RequestParam("keyword") String keyword, Model model) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        List<Diary> diaries = diaryService.searchByKeywordForUser(keyword, user);
         model.addAttribute("diaries", diaries);
         return "diaryByWord";
     }

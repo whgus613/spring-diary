@@ -89,14 +89,14 @@ public class DiaryService {
                 .collect(Collectors.toList());
     }
 
-    public List<Diary> getDiariesByDate(LocalDate date) {
-        return diaryRepository.findByDate(date);
+
+    public List<Diary> findByUserAndDate(User user, LocalDate date) {
+        return diaryRepository.findByUserAndDate(user, date);
     }
 
-    public List<Diary> searchDiariesByKeyword(String keyword) {
-        return diaryRepository.searchByKeyword(keyword);
+    public List<Diary> searchByKeywordForUser(String keyword, User user) {
+        return diaryRepository.searchByKeywordForUser(keyword, user);
     }
-
 
     public DiaryResponseDto updateDiary(Long diaryId, ChangeDiaryDto changeDiaryDto) {
         Diary diary = diaryRepository.findById(diaryId)
