@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +57,14 @@ public class FolderService {
     public Folder getFolderById(Long folderId) {
         return folderRepository.findById(folderId)
                 .orElse(null);
+    }
+
+    public String getFolderName(Long folderId) {
+        Optional<Folder> folder = folderRepository.findById(folderId);
+        if (folder != null) {
+            return folder.get().getName();
+        }
+        return "Unknown Folder";
     }
 
 }

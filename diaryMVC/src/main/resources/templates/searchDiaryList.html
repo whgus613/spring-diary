@@ -115,20 +115,6 @@
 <body>
 <div class = "header">
     <h2>Diaries</h2>
-    <div class = "search-container">
-        <form th:action="@{/diaries/user/{userId}/search-by-date(userId=${userId})}" method="get">
-            <div>
-                <input type="date" id="searchByDate" name="date" required/>
-                <button type="submit">검색</button>
-            </div>
-        </form>
-        <form th:action="@{/diaries/user/{userId}/search-by-word(userId=${userId})}" method="get">
-            <div>
-                <input type="text" id="searchByKeyword" name="keyword" placeholder="키워드로 검색" required/>
-                <button type="submit">검색</button>
-            </div>
-        </form>
-    </div>
 </div>
 <table>
     <tr th:each="diary : ${diaries}">
@@ -136,17 +122,7 @@
             <a th:href="@{/diaries/{diaryId}(diaryId=${diary.id})}" th:text="${diary.title}"></a>
         </td>
         <td th:text="${diary.date}"></td>
-        <td>
-            <a th:href="@{/diaries/update/{diaryId}(diaryId=${diary.id})}" class="edit-link">수정</a>
-        </td>
-        <td>
-            <a th:href="@{/diaries/delete/{diaryId}(diaryId=${diary.id})}" onclick="return confirm('일기를 삭제하시겠습니까?')" class="delete-link">삭제</a>
-        </td>
     </tr>
 </table>
-<div class="links-container">
-    <a th:href="@{/diaries/create/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folderId})}">새 다이어리 만들기</a>
-    <a th:href="@{/diaries/folders/{folderId}/emotion-avg(folderId=${folderId})}">평균 감정 점수 확인하기</a>
-</div>
 </body>
 </html>

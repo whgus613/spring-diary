@@ -2,28 +2,133 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>폴더 목록</title>
+    <title>Folders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            color: #333;
+        }
+
+        td:nth-child(2),
+        td:nth-child(3) {
+            width: 15%;
+        }
+
+        tr {
+            background-color: #fff;
+        }
+
+        a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-modify {
+            color: black;
+        }
+
+        .btn-delete {
+            color: black;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="date"],
+        input[type="text"],
+        button {
+            padding: 3px;
+            margin-left: 10px;
+        }
+
+        button {
+            background-color: #a0a0a0;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background-color: #0c87e8;
+        }
+
+
+        form {
+            margin-top: 20px;
+        }
+
+        form div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<h2>폴더 목록</h2>
+<div class = "header">
+    <h2>Folders</h2>
+    <div class = "search-container">
+        <form th:action="@{/diaries/user/{userId}/search-by-date(userId=${userId})}" method="get">
+            <div>
+                <input type="date" id="searchByDate" name="date" required/>
+                <button type="submit">검색</button>
+            </div>
+        </form>
+        <form th:action="@{/diaries/user/{userId}/search-by-word(userId=${userId})}" method="get">
+            <div>
+                <input type="text" id="searchByKeyword" name="keyword" placeholder="키워드로 검색" required/>
+                <button type="submit">검색</button>
+            </div>
+        </form>
+    </div>
+</div>
 <table>
-    <tr>
-        <th>이름</th>
-        <th>수정</th>
-        <th>삭제</th>
-    </tr>
     <tr th:each="folder : ${folders}">
         <td>
             <a th:href="@{/diaries/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folder.id})}" th:text="${folder.name}"></a>
         </td>
         <td>
-            <a th:href="@{/folders/update/{folderId}(folderId=${folder.id})}">수정</a>
+            <a th:href="@{/folders/update/{folderId}(folderId=${folder.id})}" class="btn-modify">수정</a>
         </td>
         <td>
-            <a th:href="@{/folders/delete/{folderId}(folderId=${folder.id})}" onclick="return confirm('폴더를 삭제하시겠습니까?')">X</a>
+            <a th:href="@{/folders/delete/{folderId}(folderId=${folder.id})}" onclick="return confirm('폴더를 삭제하시겠습니까?')" class="btn-delete">삭제</a>
         </td>
     </tr>
 </table>
-<a th:href="@{/folders/create/{userId}(userId=${userId})}">새로운 폴더 생성</a>
+<a th:href="@{/folders/create/{userId}(userId=${userId})}">새 폴더 만들기</a>
 </body>
 </html>

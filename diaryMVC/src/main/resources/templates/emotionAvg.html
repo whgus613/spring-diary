@@ -1,9 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>감정 평균</title>
+  <meta charset="UTF-8">
+  <title>emotion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .folder-info {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .score {
+      color: #0c87e8;
+    }
+
+  </style>
 </head>
 <body>
-<h1>감정 평균: <span th:text="${averageEmotionScore}"></span></h1>
+<h2>감정 점수 확인하기</h2>
+<div class="folder-info">
+  <p>'<span th:text="${folderName}"></span>' 폴더의 감정 평균은 <span th:text="${averageEmotionScore}" class = "score"></span> 점입니다</p>
+</div>
 </body>
 </html>

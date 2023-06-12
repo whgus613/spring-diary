@@ -1,26 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>다이어리 상세 정보</title>
+    <meta charset="UTF-8">
+    <title>Diary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .diary-info {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .diary-info label {
+            width: 100px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .diary-info span {
+            margin-right: 20px;
+        }
+
+        .diary-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .diary-container {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<h1>다이어리 상세 정보</h1>
+<h2>Diary</h2>
+<div class="diary-container">
+    <div class="diary-info">
+        <div>
+            <label th:text="${diary.title}"></label>
+            <span th:text="${diary.date}"></span>
+        </div>
 
-<table>
-    <tr>
-        <th>제목</th>
-        <th>내용</th>
-        <th>감정</th>
-        <th>날짜</th>
-    </tr>
-    <tr>
-        <td th:text="${diary.title}"></td>
-        <td th:text="${diary.content}"></td>
-        <td th:text="${diary.emotion}"></td>
-        <td th:text="${diary.date}"></td>
-    </tr>
-</table>
+        <div>
+            <label>감정 점수:</label>
+            <span th:text="${diary.emotion}"></span>
+        </div>
 
-<a th:href="@{/diaries/user/{userId}/folder/{folderId}(userId=${diary.userId}, folderId=${diary.folderId})}">폴더로 돌아가기</a>
+    </div>
+    <div class="diary-content">
+        <span th:text="${diary.content}"></span>
+    </div>
+</div>
 </body>
 </html>

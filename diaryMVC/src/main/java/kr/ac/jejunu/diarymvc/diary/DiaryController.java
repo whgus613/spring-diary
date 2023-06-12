@@ -2,6 +2,7 @@ package kr.ac.jejunu.diarymvc.diary;
 
 import jakarta.validation.Valid;
 import kr.ac.jejunu.diarymvc.folder.FolderDto;
+import kr.ac.jejunu.diarymvc.folder.FolderService;
 import kr.ac.jejunu.diarymvc.user.User;
 import kr.ac.jejunu.diarymvc.user.UserRepository;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,11 +20,13 @@ import java.util.NoSuchElementException;
 public class DiaryController {
     private final DiaryService diaryService;
     private final UserRepository userRepository;
+    private final FolderService folderService;
 
     public DiaryController(DiaryService diaryService,
-                           UserRepository userRepository) {
+                           UserRepository userRepository, FolderService folderService) {
         this.diaryService = diaryService;
         this.userRepository = userRepository;
+        this.folderService = folderService;
     }
 
     @GetMapping("/{diaryId}")
@@ -103,7 +106,7 @@ public class DiaryController {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
         List<Diary> diaries = diaryService.findByUserAndDate(user, parsedDate);
         model.addAttribute("diaries", diaries);
-        return "diaryByDate";
+        return "searchDiaryList";
     }
 
     @GetMapping("/user/{userId}/search-by-word")
@@ -111,14 +114,19 @@ public class DiaryController {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
         List<Diary> diaries = diaryService.searchByKeywordForUser(keyword, user);
         model.addAttribute("diaries", diaries);
-        return "diaryByWord";
+        return "searchDiaryList";
     }
 
     @GetMapping("/folders/{folderId}/emotion-avg")
     public String showAverageEmotionScore(@PathVariable Long folderId, Model model) {
         double averageEmotionScore = diaryService.calculateAverageEmotionScore(folderId);
+        String folderName = folderService.getFolderName(folderId);
+
         model.addAttribute("averageEmotionScore", averageEmotionScore);
+        model.addAttribute("folderName", folderName);
+
         return "emotionAvg";
     }
+
 
 }
