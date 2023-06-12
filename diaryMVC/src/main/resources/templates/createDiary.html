@@ -6,9 +6,10 @@
 </head>
 <body>
 <h1>다이어리 작성</h1>
-<form th:action="@{/diaries/create/{folderId}(folderId=${folderId})}" method="post" th:object="${diaryDto}">
+<form th:action="@{/diaries/create/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folderId})}" method="post" th:object="${diaryDto}">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+    <input type="hidden" name="userId" th:value="${userId}"/>
     <input type="hidden" name="folderId" th:value="${folderId}"/>
     <div>
         <label for="title">제목:</label>
@@ -23,7 +24,6 @@
         <input type="number" id="emotion" name="emotion" min="0" max="10" required/>
     </div>
     <input type="submit" value="작성"/>
-    </div>
 </form>
 </body>
 </html>

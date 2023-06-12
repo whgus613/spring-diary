@@ -28,45 +28,43 @@ public class DiaryController {
         return "diaryDetails";
     }
 
-    @GetMapping("/folder/{folderId}")
-    public String getDiariesByFolderId(@PathVariable Long folderId, Model model) {
+    @GetMapping("/user/{userId}/folder/{folderId}")
+    public String getDiariesByFolderId(@PathVariable Long userId, @PathVariable Long folderId, Model model) {
         List<DiaryResponseDto> diaries = diaryService.getDiariesByFolderId(folderId);
         model.addAttribute("diaries", diaries);
+        model.addAttribute("userId", userId);
         return "diaryList";
     }
 
-    @GetMapping("/create")
-    public String showCreateDiaryForm(Model model) {
+    @GetMapping("/create/user/{userId}/folder/{folderId}")
+    public String showCreateDiaryForm(@PathVariable Long userId, @PathVariable Long folderId, Model model) {
         model.addAttribute("diaryDto", new DiaryDto());
+        model.addAttribute("userId", userId);
+        model.addAttribute("folderId", folderId);
         return "createDiary";
     }
 
-    @PostMapping("/create/{folderId}")
+    @PostMapping("/create/user/{userId}/folder/{folderId}")
     public String createDiary(
+            @PathVariable Long userId,
             @PathVariable Long folderId,
             @Valid @ModelAttribute("diaryDto") DiaryDto diaryDto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "createDiary";
         }
-        diaryService.createDiary(folderId, diaryDto);
-        return "redirect:/diaries/folder/" + folderId;
+        diaryService.createDiary(userId, folderId, diaryDto);
+        return "redirect:/diaries/user/" + userId + "/folder/" + folderId;
 
-    }
-
-    @GetMapping("/create/{folderId}")
-    public String createDiaryForm(@PathVariable Long folderId, Model model) {
-        model.addAttribute("diaryDto", new DiaryDto());
-        model.addAttribute("folderId", folderId);
-        return "createDiary";
     }
 
     @GetMapping("/delete/{diaryId}")
     public String deleteDiary(@PathVariable Long diaryId) {
         DiaryResponseDto diary = diaryService.getDiary(diaryId);
         Long folderId = diary.getFolderId();
+        Long userId = diary.getUserId();
         diaryService.deleteDiary(diaryId);
-        return "redirect:/diaries/folder/" + folderId;
+        return "redirect:/diaries/user/" + userId + "/folder/" + folderId;
     }
 
     @GetMapping("/update/{diaryId}")
@@ -89,8 +87,9 @@ public class DiaryController {
         DiaryResponseDto diaryResponseDto = diaryService.updateDiary(diaryId, changeDiaryDto);
 
         Long folderId = diaryResponseDto.getFolderId();
+        Long userId = diaryResponseDto.getUserId();
 
-        return "redirect:/diaries/folder/" + folderId;
+        return "redirect:/diaries/user/" + userId + "/folder/" + folderId;
     }
 
     @GetMapping("/search-by-date")

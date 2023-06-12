@@ -14,7 +14,7 @@
     </tr>
     <tr th:each="folder : ${folders}">
         <td>
-            <a th:href="@{/diaries/folder/{folderId}(folderId=${folder.id})}" th:text="${folder.name}"></a>
+            <a th:href="@{/diaries/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folder.id})}" th:text="${folder.name}"></a>
         </td>
         <td>
             <a th:href="@{/folders/update/{folderId}(folderId=${folder.id})}">수정</a>

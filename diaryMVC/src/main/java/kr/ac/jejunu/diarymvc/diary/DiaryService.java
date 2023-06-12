@@ -2,6 +2,8 @@ package kr.ac.jejunu.diarymvc.diary;
 
 import kr.ac.jejunu.diarymvc.folder.Folder;
 import kr.ac.jejunu.diarymvc.folder.FolderRepository;
+import kr.ac.jejunu.diarymvc.user.User;
+import kr.ac.jejunu.diarymvc.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,21 +16,26 @@ import java.util.stream.Collectors;
 public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final FolderRepository folderRepository;
+    private final UserRepository userRepository;
 
     public DiaryService(DiaryRepository diaryRepository,
-                        FolderRepository folderRepository) {
+                        FolderRepository folderRepository,
+                        UserRepository userRepository) {
         this.diaryRepository = diaryRepository;
         this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
     }
 
-    public DiaryResponseDto createDiary(Long folderId, DiaryDto diaryDto) {
+    public DiaryResponseDto createDiary(Long userId, Long folderId, DiaryDto diaryDto) {
         Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new NoSuchElementException("Folder not found with id: " + folderId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found with id: "+ userId));
 
         Diary diary = new Diary();
         diary.setTitle(diaryDto.getTitle());
         diary.setContent(diaryDto.getContent());
         diary.setEmotion(diaryDto.getEmotion());
         diary.setFolder(folder);
+        diary.setUser(user);
 
         LocalDate currentDate = LocalDate.now();
         diary.setDate(currentDate);
@@ -41,7 +48,8 @@ public class DiaryService {
                 createdDiary.getContent(),
                 createdDiary.getEmotion(),
                 createdDiary.getDate(),
-                createdDiary.getFolder().getId()
+                createdDiary.getFolder().getId(),
+                createdDiary.getUser().getId()
         );
     }
 
@@ -60,7 +68,8 @@ public class DiaryService {
                 diary.getContent(),
                 diary.getEmotion(),
                 diary.getDate(),
-                diary.getFolder().getId()
+                diary.getFolder().getId(),
+                diary.getUser().getId()
         );
     }
 
@@ -74,7 +83,8 @@ public class DiaryService {
                         diary.getContent(),
                         diary.getEmotion(),
                         diary.getDate(),
-                        diary.getFolder().getId()
+                        diary.getFolder().getId(),
+                        diary.getUser().getId()
                 ))
                 .collect(Collectors.toList());
     }
@@ -105,7 +115,8 @@ public class DiaryService {
                 updatedDiary.getContent(),
                 updatedDiary.getEmotion(),
                 updatedDiary.getDate(),
-                updatedDiary.getFolder().getId()
+                updatedDiary.getFolder().getId(),
+                updatedDiary.getUser().getId()
         );
 
     }

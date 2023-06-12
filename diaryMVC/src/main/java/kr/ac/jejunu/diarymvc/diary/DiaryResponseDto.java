@@ -22,4 +22,6 @@ public class DiaryResponseDto {
 
     private long folderId;
 
+    private long userId;
+
 }

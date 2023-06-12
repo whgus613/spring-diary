@@ -3,6 +3,7 @@ package kr.ac.jejunu.diarymvc.diary;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import kr.ac.jejunu.diarymvc.folder.Folder;
+import kr.ac.jejunu.diarymvc.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +34,10 @@ public class Diary {
     @JoinColumn(name = "folder_id")
     @JsonBackReference
     private Folder folder;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    @JsonBackReference
+    private User user;
 
 }

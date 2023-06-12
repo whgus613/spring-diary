@@ -40,7 +40,7 @@
         </td>
     </tr>
 </table>
-<a th:href="@{/diaries/create/{folderId}(folderId=${folderId})}">새 다이어리 만들기</a>
+<a th:href="@{/diaries/create/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folderId})}">새 다이어리 만들기</a>
 <a th:href="@{/diaries/folders/{folderId}/emotion-avg(folderId=${folderId})}">평균 감정 점수 확인하기</a>
 </body>
 </html>

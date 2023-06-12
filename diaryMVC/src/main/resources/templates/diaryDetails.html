@@ -21,6 +21,6 @@
     </tr>
 </table>
 
-<a th:href="@{/diaries/folder/{folderId}(folderId=${diary.folderId})}">폴더로 돌아가기</a>
+<a th:href="@{/diaries/user/{userId}/folder/{folderId}(userId=${diary.userId}, folderId=${diary.folderId})}">폴더로 돌아가기</a>
 </body>
 </html>
