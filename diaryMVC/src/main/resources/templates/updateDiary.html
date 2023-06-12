@@ -57,8 +57,8 @@
 <body>
 <h1>다이어리 수정</h1>
 <form th:action="@{/diaries/update/{diaryId}(diaryId=${diary.id})}" method="post">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+<!--    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+<!--    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>-->
     <div>
         <label for="title">제목:</label>
         <input type="text" id="title" name="title" th:value="${diary.title}" required/>

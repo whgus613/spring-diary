@@ -1,6 +1,7 @@
 package kr.ac.jejunu.diarymvc.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
+@EnableWebSecurity
 public class UserController {
     private final UserService userService;
 
@@ -45,8 +47,8 @@ public class UserController {
 
             return "redirect:/folders/list/" + userId;
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "로그인에 실패하셨습니다.");
-            return "redirect:/login?error";
+            model.addAttribute("errorMessage", "로그인에 실패하셨습니다.");
+            return "login";
         }
     }
 

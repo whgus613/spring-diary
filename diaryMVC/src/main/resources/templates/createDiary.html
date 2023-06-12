@@ -56,8 +56,8 @@
 <body>
 <h2>일기 쓰기</h2>
 <form th:action="@{/diaries/create/user/{userId}/folder/{folderId}(userId=${userId}, folderId=${folderId})}" method="post" th:object="${diaryDto}">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+<!--    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+<!--    <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>-->
     <input type="hidden" name="userId" th:value="${userId}"/>
     <input type="hidden" name="folderId" th:value="${folderId}"/>
     <div>

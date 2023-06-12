@@ -68,8 +68,8 @@
 <body>
 <h2>폴더 만들기</h2>
 <form th:action="@{/folders/create/{userId}(userId=${userId})}" method="post" th:object="${folderDto}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <input type="text" id="name" name="name" th:field="*{name}" placeholder="폴더 이름" required>
+<!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+    <input type="text" id="name" name="name" th:field="*{name}" placeholder="폴더 이름" required />
     <button type="submit">확인</button>
 </form>
 </body>
