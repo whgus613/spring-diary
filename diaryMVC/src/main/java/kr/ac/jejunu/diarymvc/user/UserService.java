@@ -1,5 +1,7 @@
 package kr.ac.jejunu.diarymvc.user;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,11 +34,14 @@ public class UserService {
     }
 
 
-    public UserResponseDto getUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
 
-        return new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
+        if (principal instanceof User) {
+            return (User) principal;
+        }
+        return null;
     }
 
     public void deleteUser(Long userId) {

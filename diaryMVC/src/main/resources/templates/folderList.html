@@ -130,5 +130,8 @@
     </tr>
 </table>
 <a th:href="@{/folders/create/{userId}(userId=${userId})}">새 폴더 만들기</a>
+<div sec:authorize="isAuthenticated()">
+    <a sec:authorize="isAuthenticated()" th:href="@{/main}">로그아웃</a>
+</div>
 </body>
 </html>

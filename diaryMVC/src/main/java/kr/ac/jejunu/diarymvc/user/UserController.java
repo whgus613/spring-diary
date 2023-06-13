@@ -1,5 +1,6 @@
 package kr.ac.jejunu.diarymvc.user;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
@@ -37,14 +38,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("userDto") UserDto userDto, RedirectAttributes redirectAttributes, Model model) {
+    public String loginUser(@ModelAttribute("userDto") UserDto userDto, RedirectAttributes redirectAttributes, Model model, HttpSession session) {
         String email = userDto.getEmail();
         String password = userDto.getPassword();
 
         boolean isAuthenticated = userService.authenticateUser(email, password);
         if (isAuthenticated) {
             Long userId = userService.getUserIdByEmail(email);
-
+            User authenticatedUser = userService.getAuthenticatedUser();
+            session.setAttribute("authenticatedUser", authenticatedUser);
             return "redirect:/folders/list/" + userId;
         } else {
             model.addAttribute("errorMessage", "로그인에 실패하셨습니다.");
