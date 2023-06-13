@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>폴더 업데이트</title>
+    <title>Diarying</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,10 +66,10 @@
     </style>
 </head>
 <body>
-<h2>폴더 업데이트</h2>
+<h2>폴더 수정</h2>
 <form th:action="@{/folders/update/{folderId}(folderId=${folder.id})}" method="post">
-    <input type="text" name="name" th:value="${folder.name}" placeholder="새로운 폴더 이름" required>
-    <button type="submit">업데이트</button>
+    <input type="text" name="name" th:value="${folder.name}" placeholder="수정할 폴더 이름" required>
+    <button type="submit">확인</button>
 </form>
 </body>
 </html>

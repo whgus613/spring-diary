@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Folders</title>
+    <title>Diarying</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,9 +99,9 @@
     </style>
 </head>
 <body>
-<div class = "header">
+<div class="header">
     <h2>Folders</h2>
-    <div class = "search-container">
+    <div class="search-container">
         <form th:action="@{/diaries/user/{userId}/search-by-date(userId=${userId})}" method="get">
             <div>
                 <input type="date" id="searchByDate" name="date" required/>
@@ -129,9 +129,11 @@
         </td>
     </tr>
 </table>
-<a th:href="@{/folders/create/{userId}(userId=${userId})}">새 폴더 만들기</a>
-<div sec:authorize="isAuthenticated()">
-    <a sec:authorize="isAuthenticated()" th:href="@{/main}">로그아웃</a>
+<div style="display: flex; justify-content: space-between;">
+    <a th:href="@{/folders/create/{userId}(userId=${userId})}">새 폴더 만들기</a>
+    <div sec:authorize="isAuthenticated()">
+        <a class="button" sec:authorize="isAuthenticated()" th:href="@{/main}" style="color: #a0a0a0;">로그아웃</a>
+    </div>
 </div>
 </body>
 </html>
